@@ -1,18 +1,15 @@
 const path = require('path');
 const { getJsonFromFile } = require('../helpers/readFile');
 
-const checkData = (data, res) => {
-  if (!data) {
-    res
-      .status(500)
-      .send('serverError');
-  }
-};
-
 const getAllUsers = (req, res) => {
   getJsonFromFile(path.join(__dirname, '..', 'data', 'users.json'))
     .then((data) => {
-      checkData(data, res);
+      if (!data) {
+        res
+          .status(500)
+          .send({ message: 'Ошибка считывания файла' });
+        return;
+      }
       res
         .status(200)
         .send(data.users);
@@ -22,7 +19,12 @@ const getAllUsers = (req, res) => {
 const getUserById = (req, res) => {
   getJsonFromFile(path.join(__dirname, '..', 'data', 'users.json'))
     .then((data) => {
-      checkData(data, res);
+      if (!data) {
+        res
+          .status(500)
+          .send({ message: 'Ошибка считывания файла' });
+        return;
+      }
       const foundUser = data.users.find((c) => c._id === req.params.id);
       if (!foundUser) {
         res

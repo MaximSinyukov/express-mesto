@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-router.use('/', (req, res) => {
+router.get('*', (req, res) => {
   res
     .status(404)
     .send({ message: 'Запрашиваемый ресурс не найден' });

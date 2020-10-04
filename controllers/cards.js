@@ -6,7 +6,7 @@ const getAllCards = (req, res) => getJsonFromFile(path.join(__dirname, '..', 'da
     if (!data) {
       res
         .status(500)
-        .send('serverError');
+        .send({ message: 'Ошибка считывания файла' });
       return;
     }
     res
