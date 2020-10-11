@@ -1,43 +1,37 @@
-const path = require('path');
-const { getJsonFromFile } = require('../helpers/readFile');
+const User = require('../models/user');
 
-const getAllUsers = (req, res) => {
-  getJsonFromFile(path.join(__dirname, '..', 'data', 'users.json'))
-    .then((data) => {
-      if (!data) {
-        res
-          .status(500)
-          .send({ message: 'Ошибка считывания файла' });
-        return;
-      }
-      res
-        .status(200)
-        .send(data.users);
-    });
-};
+const getAllUsers = (req, res) => User.find({})
+  .then((users) => res.status(200).send(users))
+  .catch((err) => {
+    if (err.name === 'CastError') {
+      return res.status(404).send({ message: 'Произошла ошибка запроса.' });
+    }
+    return res.status(500).send({ message: 'Мы уже работаем над этим.' });
+  });
 
-const getUserById = (req, res) => {
-  getJsonFromFile(path.join(__dirname, '..', 'data', 'users.json'))
-    .then((data) => {
-      if (!data) {
-        res
-          .status(500)
-          .send({ message: 'Ошибка считывания файла' });
-        return;
+const getUserById = (req, res) => User.findById(req.params.id)
+  .then((user) => res.status(200).send(user))
+  .catch((err) => {
+    if (err.name === 'CastError') {
+      return res.status(404).send({ message: 'Пользователь с таким id не найден.' });
+    }
+    return res.status(500).send({ message: 'Мы уже работаем над этим.' });
+  });
+
+const createUser = (req, res) => {
+  const { name, about, avatar } = req.body;
+  return User.create({ name, about, avatar })
+    .then((user) => res.status(200).send(user))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        return res.status(400).send({ message: 'Переданы некорректные данные' });
       }
-      const foundUser = data.users.find((c) => c._id === req.params.id);
-      if (!foundUser) {
-        res
-          .status(404)
-          .send({ message: 'Нет пользователя с таким id' });
-      }
-      res
-        .status(200)
-        .send(foundUser);
+      return res.status(500).send({ message: 'Мы уже работаем над этим.' });
     });
 };
 
 module.exports = {
   getAllUsers,
   getUserById,
+  createUser,
 };
