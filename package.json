@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MaximBorov/express-mesto.git"
+    "url": "git+https://github.com/MaximSinyukov/express-mesto.git"
   },
   "keywords": [],
   "author": "Maxim Sinyukov",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MaximBorov/express-mesto/issues"
+    "url": "https://github.com/MaximSinyukov/express-mesto/issues"
   },
-  "homepage": "https://github.com/MaximBorov/express-mesto#readme",
+  "homepage": "https://github.com/MaximSinyukov/express-mesto#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
